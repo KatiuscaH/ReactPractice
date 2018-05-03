@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Proyecto react</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+    <H2>Proyecto react</H2>
+    <div id="marco"></div>
+
+    <script type="text/babel">
+
+        //componente
+        /*Los componentes se crean para devolver cosas por el
+        método render, una vez hecho el componente, se pasa al
+        método ReactDOM.render como si fuera una etiqueta html y 
+        este a su vez se envía al div que se especificó como
+        el segundo parámetro del método.
+         */
+    class Principal extends React.Component{
+        constructor(){
+            super();
+            this.state={
+                numero: 0
+            }
+        }
+
+
+masUno(){
+    this.setState({numero: this.state.numero + 1});
+  
+
+}
+
+menosUno(){
+    this.setState({numero: this.state.numero - 1});
+}
+  render(){//funcion render
+            return(
+                /*como el método ReactDOM.render
+                solo recibe dos parámetros, entonces si se quieren
+                pasar varios componentes deben englobarse
+                dentro de otro componente y a su vez
+                dentro de un div para que se devuelva
+                */
+                <div>
+            <h2>Hola desde componente de React</h2>
+            <IntroducirTexto/>
+            <h2>{this.state.numero }</h2>
+          <AumentarNumero funAumentar={this.masUno.bind(this) } />
+          <br/>
+            <DisminuirNumero funDisminuir={this.menosUno.bind(this)}/>
+            </div>
+            );
+            
+        }
+    }
+
+//componente para aumentar numero
+//para acceder a la informacion que manda otro componente
+//hacemos con props.
+class AumentarNumero extends React.Component{
+    render(){
+        return(
+            <div>
+         <button onClick={this.props.funAumentar}>Aumentar!</button>
+         
+            </div> 
+        );
+    }
+}
+
+
+class DisminuirNumero extends React.Component{
+    render(){
+        return(
+            <div>
+          <button onClick={this.props.funDisminuir}>Disminuir!</button>
+            </div> 
+        );
+    }
+}
+
+
+
+//cada componente devuelve solo UNA etiqueta
+class IntroducirTexto extends React.Component{
+    constructor(){//metodo constructor permite definir estados del componente
+        super();//siempre va!
+        this.state = {//estado objeto llave:valor
+            nombre: "Aqui va tu nombre"
+        }
+
+    }
+/*Este método lo que hace es tomar el valor de lo que esta
+en el input*/
+    cambiarNombre(evento){
+        this.setState({nombre: evento.target.value});
+    }
+
+ render(){
+        return(
+            <div>
+                <h4>{this.state.nombre}</h4>
+                {/*El evento onchange hace que cada vez que se escriba
+                vaya cambiando el valor de lo que hay en el input.
+                con el método cambiarNombre se le pasa por parámetro 
+                lo que se escriba en el input*/}
+                <input onChange={this.cambiarNombre.bind(this)}/>
+                <h2>Texto desde otro componente</h2>
+            </div>
+        );
+    }
+}
+
+
+
+//React dom requiere dos parametros: un html 
+//y el elemento a renderizar
+    ReactDOM.render(
+        <Principal/>,
+        document.getElementById('marco')
+    );
+
+</script>
+</body>
+
+</html>
